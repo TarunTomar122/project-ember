@@ -11,7 +11,9 @@ function App() {
           <LexicalEditor />
         </div>
         <div className="mt-4 text-sm text-gray-600 text-center">
-          <p>Select some text to see the floating HUD with "Rewrite" and "Explain" buttons</p>
+          <p>Select some text to see the floating HUD with "Rewrite" and "Expand" buttons</p>
+          <p className="mt-1">The "Expand" button uses AI (OpenAI or Gemini) to enhance your selected text</p>
+          <p className="mt-1">Switch between AI providers when multiple are configured</p>
         </div>
       </div>
     </div>

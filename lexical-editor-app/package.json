@@ -10,11 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@lexical/react": "^0.32.1",
     "@lexical/rich-text": "^0.32.1",
     "@lexical/selection": "^0.32.1",
     "@lexical/utils": "^0.32.1",
+    "@tailwindcss/postcss": "^4.1.11",
     "lexical": "^0.32.1",
+    "openai": "^5.8.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
