@@ -92,6 +92,7 @@ export default function LexicalEditor() {
             <FloatingHUD
               rect={selectionData.rect}
               selection={selectionData.selection}
+              selectedText={selectionData.text}
             />
           )}
         </div>
