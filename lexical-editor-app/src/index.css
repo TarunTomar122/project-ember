@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Lexical Editor Styles */
+.editor-container {
+  position: relative;
+}
+
+.editor-content {
+  min-height: 200px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: white;
+}
+
+.editor-content:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Floating HUD Styles */
+.floating-hud {
+  position: absolute;
+  z-index: 1000;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
