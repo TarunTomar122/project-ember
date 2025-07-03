@@ -316,6 +316,184 @@ Respond with a JSON object in this exact format:
 }
 
 /**
+ * Extract story entities from text using Gemini with structured outputs
+ * @param {string} text - The text to analyze for entities
+ * @returns {Promise<Object>} - Object containing all extracted entities
+ */
+export async function extractEntities(text) {
+  try {
+    if (!genAI) {
+      throw new Error('Gemini API key not configured');
+    }
+
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-preview-05-20' });
+    
+    const prompt = `You are an expert story analyst specialized in extracting and categorizing story elements. Your task is to analyze text and identify all characters, locations, objects, organizations, events, themes, conflicts, and other narrative elements with high accuracy and detail.
+
+Analyze the following story text and extract ALL types of story elements including characters, locations, objects, organizations, events, themes, conflicts, and more. Provide detailed information for each entity.
+
+TEXT TO ANALYZE:
+${text}
+
+CRITICAL INSTRUCTIONS: 
+- Extract FULL character names (e.g., "Kaelen Stormwright", "Seraphina Nightwhisper") not partial words
+- Do NOT extract common words, pronouns, or fragments as characters
+- Include all mentioned organizations, councils, academies, orders, etc.
+- Identify key events, ceremonies, battles, disasters mentioned in the text
+- Extract themes like sacrifice vs knowledge, loyalty, power, corruption, etc.
+- Identify conflicts between characters or ideological conflicts
+- Include magical/fantastical systems and their rules
+- Note relationships between characters (master/student, rivals, etc.)
+- Include historical events, laws, prophecies, and world-building lore
+- Give confidence scores based on how clearly each entity is described
+- Be thorough but accurate - only extract what's actually in the text
+
+IMPORTANT: Respond with a JSON object in this exact format:
+{
+  "characters": [
+    {
+      "name": "Full character name",
+      "description": "Physical description if mentioned",
+      "personality": "Personality traits based on actions/dialogue",
+      "background": "Background information from the text",
+      "role": "protagonist/antagonist/supporting/minor",
+      "age": "Age if mentioned or estimated",
+      "pronouns": "he/him/she/her/they/them based on context",
+      "traits": ["personality trait 1", "personality trait 2"],
+      "confidence": 0.85
+    }
+  ],
+  "locations": [
+    {
+      "name": "Location name",
+      "type": "city/building/room/landmark/region/fantasy/other",
+      "description": "Description of the location",
+      "atmosphere": "Mood or feeling of the place",
+      "significance": "Importance to the story",
+      "confidence": 0.75
+    }
+  ],
+  "objects": [
+    {
+      "name": "Object name",
+      "type": "weapon/tool/document/treasure/furniture/magical/other",
+      "description": "Description of the object",
+      "significance": "Importance to the story",
+      "confidence": 0.80
+    }
+  ],
+  "organizations": [
+    {
+      "name": "Organization name",
+      "type": "government/guild/academy/council/order/army/other",
+      "description": "Description and purpose of the organization",
+      "members": ["key member 1", "key member 2"],
+      "confidence": 0.70
+    }
+  ],
+  "events": [
+    {
+      "name": "Event name",
+      "type": "battle/ceremony/disaster/discovery/meeting/other",
+      "description": "What happened during this event",
+      "timeframe": "When it occurred (past/present/future)",
+      "significance": "Importance to the story",
+      "confidence": 0.75
+    }
+  ],
+  "magicSystems": [
+    {
+      "name": "Magic system name",
+      "type": "hard/soft/divine/elemental/other",
+      "description": "How the magic system works",
+      "rules": "Limitations or costs of using magic",
+      "confidence": 0.80
+    }
+  ],
+  "themes": [
+    {
+      "name": "Theme name",
+      "type": "major/minor/motif",
+      "description": "How this theme is expressed in the story",
+      "examples": ["example 1", "example 2"],
+      "confidence": 0.65
+    }
+  ],
+  "conflicts": [
+    {
+      "name": "Conflict name",
+      "type": "internal/external/person-vs-person/person-vs-society/person-vs-nature/other",
+      "description": "Description of the conflict",
+      "parties": ["party 1", "party 2"],
+      "stakes": "What's at risk",
+      "confidence": 0.70
+    }
+  ],
+  "lore": [
+    {
+      "title": "Lore item title",
+      "type": "law/rule/legend/history/prophecy/tradition/other",
+      "description": "Detailed description of this lore element",
+      "significance": "Importance to the world/story",
+      "confidence": 0.75
+    }
+  ],
+  "scenes": [
+    {
+      "title": "Scene title or description",
+      "location": "Where the scene takes place",
+      "characters": ["character 1", "character 2"],
+      "description": "What happens in this scene",
+      "purpose": "Dramatic purpose of the scene",
+      "confidence": 0.80
+    }
+  ],
+  "relationships": [
+    {
+      "fromEntity": "First character/entity name",
+      "toEntity": "Second character/entity name",
+      "relationshipType": "mentor/student, enemy/rival, family, romantic, alliance, etc.",
+      "description": "Description of their relationship",
+      "confidence": 0.85
+    }
+  ],
+  "timelines": [
+    {
+      "name": "Timeline name",
+      "type": "historical/story/character/other",
+      "description": "Description of this timeline or sequence",
+      "events": ["event 1", "event 2"],
+      "confidence": 0.70
+    }
+  ]
+}`;
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const responseText = response.text();
+
+    const parsedResult = parseGeminiResponse(responseText);
+    
+    return {
+      success: true,
+      result: parsedResult,
+      action: 'extract_entities'
+    };
+  } catch (error) {
+    console.group('🔍 Gemini extractEntities Error Details');
+    console.error('Raw error:', error);
+    console.error('Error name:', error.name);
+    console.error('Error message:', error.message);
+    console.log('Request details:');
+    console.log('- Text length:', text.length);
+    console.log('- Model:', 'gemini-2.5-flash-preview-05-20');
+    console.groupEnd();
+    
+    throw new Error(`Gemini API Error: ${error.message}`);
+  }
+}
+
+/**
  * Check if Gemini API key is configured
  * @returns {boolean} - Whether the API key is available
  */

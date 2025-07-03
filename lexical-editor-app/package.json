@@ -11,14 +11,21 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@heroicons/react": "^2.2.0",
     "@lexical/react": "^0.32.1",
     "@lexical/rich-text": "^0.32.1",
     "@lexical/selection": "^0.32.1",
     "@lexical/utils": "^0.32.1",
+    "compromise": "^14.14.4",
+    "fuse.js": "^7.1.0",
     "lexical": "^0.32.1",
     "openai": "^5.8.2",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.59.0",
+    "react-router-dom": "^7.6.3",
+    "uuid": "^11.1.0",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",

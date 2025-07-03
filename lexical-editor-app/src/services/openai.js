@@ -340,6 +340,276 @@ export async function describeText(selectedText, fullContext = '') {
 }
 
 /**
+ * Extract story entities from text using OpenAI with structured outputs
+ * @param {string} text - The text to analyze for entities
+ * @returns {Promise<Object>} - Object containing all extracted entities
+ */
+export async function extractEntities(text) {
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4.1-nano-2025-04-14",
+      messages: [
+        {
+          role: "system",
+          content: `You are an expert story analyst specialized in extracting and categorizing story elements. Your task is to analyze text and identify all characters, locations, objects, organizations, events, themes, conflicts, and other narrative elements with high accuracy and detail.`
+        },
+        {
+          role: "user",
+          content: `Analyze the following story text and extract ALL types of story elements including characters, locations, objects, organizations, events, themes, conflicts, and more. Provide detailed information for each entity.
+
+TEXT TO ANALYZE:
+${text}
+
+CRITICAL INSTRUCTIONS: 
+- Extract FULL character names (e.g., "Kaelen Stormwright", "Seraphina Nightwhisper") not partial words
+- Do NOT extract common words, pronouns, or fragments as characters
+- Include all mentioned organizations, councils, academies, orders, etc.
+- Identify key events, ceremonies, battles, disasters mentioned in the text
+- Extract themes like sacrifice vs knowledge, loyalty, power, corruption, etc.
+- Identify conflicts between characters or ideological conflicts
+- Include magical/fantastical systems and their rules
+- Note relationships between characters (master/student, rivals, etc.)
+- Include historical events, laws, prophecies, and world-building lore
+- Give confidence scores based on how clearly each entity is described
+- Be thorough but accurate - only extract what's actually in the text`
+        }
+      ],
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: "entity_extraction",
+          schema: {
+            type: "object",
+            properties: {
+              characters: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    description: { type: "string" },
+                    personality: { type: "string" },
+                    background: { type: "string" },
+                    role: { type: "string" },
+                    age: { type: "string" },
+                    pronouns: { type: "string" },
+                    traits: { type: "array", items: { type: "string" } },
+                    confidence: { type: "number" }
+                  },
+                  required: ["name", "description", "personality", "background", "role", "age", "pronouns", "traits", "confidence"],
+                  additionalProperties: false
+                }
+              },
+              locations: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    type: { type: "string" },
+                    description: { type: "string" },
+                    atmosphere: { type: "string" },
+                    significance: { type: "string" },
+                    confidence: { type: "number" }
+                  },
+                  required: ["name", "type", "description", "atmosphere", "significance", "confidence"],
+                  additionalProperties: false
+                }
+              },
+              objects: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    type: { type: "string" },
+                    description: { type: "string" },
+                    significance: { type: "string" },
+                    confidence: { type: "number" }
+                  },
+                  required: ["name", "type", "description", "significance", "confidence"],
+                  additionalProperties: false
+                }
+              },
+              organizations: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    type: { type: "string" },
+                    description: { type: "string" },
+                    members: { type: "array", items: { type: "string" } },
+                    confidence: { type: "number" }
+                  },
+                  required: ["name", "type", "description", "members", "confidence"],
+                  additionalProperties: false
+                }
+              },
+              events: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    type: { type: "string" },
+                    description: { type: "string" },
+                    timeframe: { type: "string" },
+                    significance: { type: "string" },
+                    confidence: { type: "number" }
+                  },
+                  required: ["name", "type", "description", "timeframe", "significance", "confidence"],
+                  additionalProperties: false
+                }
+              },
+              magicSystems: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    type: { type: "string" },
+                    description: { type: "string" },
+                    rules: { type: "string" },
+                    confidence: { type: "number" }
+                  },
+                  required: ["name", "type", "description", "rules", "confidence"],
+                  additionalProperties: false
+                }
+              },
+              themes: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    type: { type: "string" },
+                    description: { type: "string" },
+                    examples: { type: "array", items: { type: "string" } },
+                    confidence: { type: "number" }
+                  },
+                  required: ["name", "type", "description", "examples", "confidence"],
+                  additionalProperties: false
+                }
+              },
+              conflicts: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    type: { type: "string" },
+                    description: { type: "string" },
+                    parties: { type: "array", items: { type: "string" } },
+                    stakes: { type: "string" },
+                    confidence: { type: "number" }
+                  },
+                  required: ["name", "type", "description", "parties", "stakes", "confidence"],
+                  additionalProperties: false
+                }
+              },
+              lore: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    title: { type: "string" },
+                    type: { type: "string" },
+                    description: { type: "string" },
+                    significance: { type: "string" },
+                    confidence: { type: "number" }
+                  },
+                  required: ["title", "type", "description", "significance", "confidence"],
+                  additionalProperties: false
+                }
+              },
+              scenes: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    title: { type: "string" },
+                    location: { type: "string" },
+                    characters: { type: "array", items: { type: "string" } },
+                    description: { type: "string" },
+                    purpose: { type: "string" },
+                    confidence: { type: "number" }
+                  },
+                  required: ["title", "location", "characters", "description", "purpose", "confidence"],
+                  additionalProperties: false
+                }
+              },
+              relationships: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    fromEntity: { type: "string" },
+                    toEntity: { type: "string" },
+                    relationshipType: { type: "string" },
+                    description: { type: "string" },
+                    confidence: { type: "number" }
+                  },
+                  required: ["fromEntity", "toEntity", "relationshipType", "description", "confidence"],
+                  additionalProperties: false
+                }
+              },
+              timelines: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    type: { type: "string" },
+                    description: { type: "string" },
+                    events: { type: "array", items: { type: "string" } },
+                    confidence: { type: "number" }
+                  },
+                  required: ["name", "type", "description", "events", "confidence"],
+                  additionalProperties: false
+                }
+              }
+            },
+            required: ["characters", "locations", "objects", "organizations", "events", "magicSystems", "themes", "conflicts", "lore", "scenes", "relationships", "timelines"],
+            additionalProperties: false
+          },
+          strict: true
+        }
+      },
+      max_tokens: 2000,
+      temperature: 0.3,
+    });
+
+    const result = JSON.parse(response.choices[0].message.content);
+    return {
+      success: true,
+      result: result,
+      action: 'extract_entities'
+    };
+  } catch (error) {
+    console.group('🔍 OpenAI extractEntities Error Details');
+    console.error('Raw error:', error);
+    console.error('Error name:', error.name);
+    console.error('Error message:', error.message);
+    console.log('Request details:');
+    console.log('- Text length:', text.length);
+    console.log('- Model:', "gpt-4.1-nano-2025-04-14");
+    
+    if (error.response) {
+      console.error('API Response status:', error.response.status);
+      console.error('API Response data:', error.response.data);
+    }
+    
+    if (error.request) {
+      console.error('Request details:', error.request);
+    }
+    
+    console.groupEnd();
+    throw new Error(`OpenAI API Error: ${error.message}`);
+  }
+}
+
+/**
  * Get tone instruction for the AI based on selected tone
  * @param {string} tone - The tone option
  * @returns {string} - Detailed instruction for the tone
