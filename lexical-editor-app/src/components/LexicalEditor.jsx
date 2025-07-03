@@ -91,7 +91,6 @@ export default function LexicalEditor() {
           {selectionData.hasSelection && (
             <FloatingHUD
               rect={selectionData.rect}
-              selection={selectionData.selection}
               selectedText={selectionData.text}
             />
           )}

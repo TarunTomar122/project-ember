@@ -2,18 +2,14 @@ import LexicalEditor from './components/LexicalEditor'
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-          Lexical Editor with Floating HUD
+    <div style={{minHeight: '100vh', backgroundColor: '#f9fafb', padding: '2rem'}}>
+      <div style={{maxWidth: '64rem', margin: '0 auto', padding: '0 1rem'}}>
+        <h1 style={{fontSize: '1.875rem', fontWeight: 'bold', color: '#111827', marginBottom: '2rem', textAlign: 'center'}}>
+          Project Ember
         </h1>
-        <div className="bg-white rounded-lg shadow-sm p-6">
+        
+        <div style={{backgroundColor: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', padding: '1.5rem'}}>
           <LexicalEditor />
-        </div>
-        <div className="mt-4 text-sm text-gray-600 text-center">
-          <p>Select some text to see the floating HUD with "Rewrite" and "Expand" buttons</p>
-          <p className="mt-1">The "Expand" button uses AI (OpenAI or Gemini) to enhance your selected text</p>
-          <p className="mt-1">Switch between AI providers when multiple are configured</p>
         </div>
       </div>
     </div>

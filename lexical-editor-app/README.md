@@ -1,61 +1,139 @@
-# Lexical Editor with AI Text Expansion
+# AI-Powered Novel Writing Assistant
 
-A rich text editor built with Lexical that includes AI-powered text expansion using multiple AI providers (OpenAI GPT-3.5 and Google Gemini).
+A powerful React-based writing tool that helps authors craft compelling narratives using AI assistance. Built with Lexical editor and integrated with OpenAI's GPT models.
 
 ## Features
 
-- Rich text editing with Lexical
-- Floating HUD that appears when text is selected
-- AI-powered text expansion using multiple providers:
-  - **OpenAI GPT-3.5-turbo**
-  - **Google Gemini 1.0 Pro**
-- Dynamic provider switching
-- Modern UI with Tailwind CSS
+### ✨ AI Writing Assistance
+- **Expand**: Add depth, detail, sensory information, and narrative richness to your text
+- **Rewrite**: Improve clarity, style, pacing, and prose quality while preserving meaning
+- **Describe**: Get detailed analysis of writing techniques, strengths, and improvement suggestions
 
-## Setup
+### 🎨 Tone Control
+Choose from various writing tones:
+- **Keep Same Tone**: Maintain your existing style
+- **Improve Tone**: Enhance while keeping the same character
+- **Dramatic**: Increase tension and emotional intensity
+- **Lighthearted**: Add playfulness and humor
+- **Formal**: Use sophisticated vocabulary and structure
+- **Casual**: Simplify language for accessibility
 
-1. Install dependencies:
+### 🔄 Context-Aware Processing
+- Uses full document context to maintain consistency
+- Preserves character voices and plot elements
+- Ensures narrative coherence across your entire work
+
+### 📋 Preview & Control
+- Preview all AI suggestions before accepting
+- Accept or reject changes with one click
+- Detailed explanations of what was changed
+
+## Getting Started
+
+### Prerequisites
+- Node.js 20.19.0 or higher
+- npm or yarn package manager
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd lexical-editor-app
+```
+
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-2. Set up AI API keys (configure at least one):
-   - Copy `.env.example` to `.env`
-   - Add your OpenAI API key: `VITE_OPENAI_API_KEY=your_openai_api_key_here`
-   - Add your Gemini API key: `VITE_GEMINI_API_KEY=your_gemini_api_key_here`
-   
-3. Start the development server:
+3. Set up your API keys:
+Create a `.env` file in the root directory:
+```bash
+# OpenAI API Configuration (Required)
+VITE_OPENAI_API_KEY=your_openai_api_key_here
+
+# Gemini API Configuration (Optional)
+VITE_GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+4. Get your API keys:
+   - **OpenAI**: Visit [OpenAI Platform](https://platform.openai.com/api-keys)
+   - **Gemini**: Visit [Google AI Studio](https://aistudio.google.com/app/apikey) (optional)
+
+5. Start the development server:
 ```bash
 npm run dev
 ```
 
-## Usage
+6. Open your browser and navigate to `http://localhost:5173`
 
-1. Type some text in the editor
-2. Select any text to see the floating HUD
-3. If multiple AI providers are configured, use the dropdown to switch between them
-4. Click "Expand" to use AI to expand and enhance the selected text
-5. Click "Rewrite" for basic text replacement (placeholder functionality)
+## How to Use
 
-## AI Provider Configuration
+1. **Start Writing**: Begin typing your novel or story in the editor
+2. **Select Text**: Highlight any text you want to enhance
+3. **Choose Action**: Click Expand, Rewrite, or Describe from the floating toolbar
+4. **Select Tone**: Choose your preferred writing tone from the dropdown
+5. **Preview**: Review the AI's suggestions in the preview modal
+6. **Accept or Reject**: Keep your original text or accept the AI's enhancement
 
-### OpenAI
-- Get your API key from: https://platform.openai.com/
-- Add to `.env`: `VITE_OPENAI_API_KEY=your_key_here`
+## Supported AI Models
 
-### Google Gemini
-- Get your API key from: https://makersuite.google.com/app/apikey
-- Add to `.env`: `VITE_GEMINI_API_KEY=your_key_here`
+- **OpenAI GPT-4.1-nano-2025-04-14**: Primary model for novel writing assistance
+- **Google Gemini 2.5 Flash**: Alternative provider (basic functionality)
 
 ## Technology Stack
 
-- **React** - UI framework
-- **Lexical** - Rich text editor framework
-- **OpenAI** - AI text expansion provider
-- **Google Gemini 2.5 Flash** - AI text expansion provider
-- **Tailwind CSS** - Styling
-- **Vite** - Build tool
+- **React 19** - Modern UI framework
+- **Lexical** - Extensible text editor framework
+- **Vite** - Fast build tool and development server
+- **Tailwind CSS** - Utility-first CSS framework
+- **OpenAI API** - AI text processing
+- **Google Gemini API** - Alternative AI provider
 
-## Expanding the ESLint configuration
+## Development
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+### Project Structure
+
+```
+src/
+├── components/
+│   ├── LexicalEditor.jsx    # Main editor component
+│   └── FloatingHUD.jsx      # AI assistance toolbar
+├── services/
+│   ├── openai.js           # OpenAI integration
+│   ├── gemini.js           # Gemini integration
+│   └── aiProvider.js       # AI provider abstraction
+├── App.jsx                 # Main application
+└── main.jsx               # Application entry point
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## Security Notes
+
+- API keys are only used client-side for development
+- For production deployment, implement proper backend API proxying
+- Never commit API keys to version control
+- The `.env` file is gitignored for security
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For questions and support, please open an issue on the repository.
