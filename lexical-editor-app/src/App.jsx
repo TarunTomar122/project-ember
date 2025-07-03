@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import LexicalEditor from './components/LexicalEditor';
 import Navigation from './components/Navigation';
-import LeftSidebar from './components/LeftSidebar';
+import MainSideNavigation from './components/MainSideNavigation';
+import BrainstormContainer from './components/brainstorm/BrainstormContainer';
+import WriteContainer from './components/WriteContainer';
 import BibleContainer from './components/bible/BibleContainer';
 import TextAnalysis from './components/TextAnalysis';
 import ModalManager from './components/shared/ModalManager';
@@ -9,7 +10,7 @@ import useBibleStore from './stores/bibleStore';
 import { initializeStorage } from './services/storage';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('editor');
+  const [activeTab, setActiveTab] = useState('write');
   const { loadData, activeBibleSection, setActiveBibleSection } = useBibleStore();
 
   useEffect(() => {
@@ -22,43 +23,41 @@ function App() {
     }
   }, [loadData, activeBibleSection, setActiveBibleSection]);
 
-  // Check if we should show the left sidebar (only for bible tab)
-  const shouldShowSidebar = activeTab === 'bible';
-
   const renderMainContent = () => {
     switch (activeTab) {
-      case 'editor':
-        return (
-          <div style={{minHeight: '100vh', backgroundColor: '#f9fafb', padding: '2rem'}}>
-            <div style={{maxWidth: '64rem', margin: '0 auto', padding: '0 1rem'}}>
-              <div style={{backgroundColor: 'white', borderRadius: '0.5rem', boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', padding: '1.5rem'}}>
-                <LexicalEditor />
-              </div>
-            </div>
-          </div>
-        );
+      case 'brainstorm':
+        return <BrainstormContainer />;
+      case 'write':
+        return <WriteContainer />;
       case 'bible':
-        return (
-          <div className="h-full overflow-y-auto">
-            <BibleContainer />
-          </div>
-        );
-      case 'tools':
-        return (
-          <div className="h-full overflow-y-auto">
-            <div className="p-6">
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Tools</h2>
-                <p className="text-gray-600">AI-powered brainstorming and project overview coming soon...</p>
-              </div>
-            </div>
-          </div>
-        );
-      case 'analysis':
+        return <BibleContainer />;
+      case 'analyse':
         return (
           <div className="h-full overflow-y-auto">
             <div className="p-6">
               <TextAnalysis />
+            </div>
+          </div>
+        );
+      case 'publish':
+        return (
+          <div className="h-full overflow-y-auto">
+            <div className="p-6">
+              <div className="text-center py-12">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Publish</h2>
+                <p className="text-gray-600">Publishing tools and options coming soon...</p>
+              </div>
+            </div>
+          </div>
+        );
+      case 'marketing':
+        return (
+          <div className="h-full overflow-y-auto">
+            <div className="p-6">
+              <div className="text-center py-12">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Marketing</h2>
+                <p className="text-gray-600">Marketing tools and analytics coming soon...</p>
+              </div>
             </div>
           </div>
         );
@@ -76,15 +75,20 @@ function App() {
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      {/* Top Navigation */}
+      <Navigation />
+      
+      {/* Main Content Area with Side Navigation */}
       <div className="flex-1 flex overflow-hidden">
-        {shouldShowSidebar && (
-          <LeftSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-        )}
+        {/* Left Side Navigation */}
+        <MainSideNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+        
+        {/* Main Content */}
         <div className="flex-1 overflow-hidden">
           {renderMainContent()}
         </div>
       </div>
+      
       <ModalManager />
     </div>
   );

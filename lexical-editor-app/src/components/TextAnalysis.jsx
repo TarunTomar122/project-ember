@@ -7,7 +7,7 @@ export const TextAnalysis = () => {
   const [text, setText] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResults, setAnalysisResults] = useState(null);
-  const [selectedProvider, setSelectedProvider] = useState('openai');
+  const [selectedProvider, setSelectedProvider] = useState('gemini');
   const [showResults, setShowResults] = useState(false);
   const [error, setError] = useState(null);
   const [selectedEntities, setSelectedEntities] = useState(new Set());
@@ -445,7 +445,7 @@ export const TextAnalysis = () => {
               value={text}
               onChange={(e) => setText(e.target.value)}
               placeholder="Paste your manuscript text here to analyze for characters, locations, objects, organizations, events, themes, conflicts, magic systems, and other story elements..."
-              className="w-full h-40 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+              className="w-full h-80 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
             />
             <p className="text-xs text-gray-500 mt-1">
               {text.length} characters • Minimum 50 characters recommended for analysis

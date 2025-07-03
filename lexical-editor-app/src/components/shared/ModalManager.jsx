@@ -1,20 +1,29 @@
 import { useState } from 'react';
 import useBibleStore from '../../stores/bibleStore';
 import Modal from './Modal';
-import { ENTITY_TYPES } from '../../data/schemas';
 
 const ModalManager = () => {
   const { 
     showCreateModal,
-    createModalType,
+    createModalEntityType,
     closeCreateModal,
     showDeleteModal,
     deleteTarget,
     closeDeleteModal,
     addCharacter,
     addLocation,
+    addObject,
+    addOrganization,
+    addEvent,
+    addTimeline,
+    addTheme,
+    addConflict,
+    addLore,
+    addScene,
+    addMagicSystem,
     deleteCharacter,
-    deleteLocation
+    deleteLocation,
+    deleteObject
   } = useBibleStore();
 
   const [formData, setFormData] = useState({});
@@ -29,15 +38,42 @@ const ModalManager = () => {
   const handleCreateSubmit = (e) => {
     e.preventDefault();
     
-    switch (createModalType) {
-      case ENTITY_TYPES.CHARACTER:
+    switch (createModalEntityType) {
+      case 'character':
         addCharacter(formData);
         break;
-      case ENTITY_TYPES.LOCATION:
+      case 'location':
         addLocation(formData);
         break;
+      case 'object':
+        addObject(formData);
+        break;
+      case 'organizations':
+        addOrganization(formData);
+        break;
+      case 'events':
+        addEvent(formData);
+        break;
+      case 'timelines':
+        addTimeline(formData);
+        break;
+      case 'themes':
+        addTheme(formData);
+        break;
+      case 'conflicts':
+        addConflict(formData);
+        break;
+      case 'lore':
+        addLore(formData);
+        break;
+      case 'scenes':
+        addScene(formData);
+        break;
+      case 'magicSystems':
+        addMagicSystem(formData);
+        break;
       default:
-        console.error('Unknown create type:', createModalType);
+        console.error('Unknown create type:', createModalEntityType);
         return;
     }
     
@@ -55,6 +91,9 @@ const ModalManager = () => {
       case 'location':
         deleteLocation(deleteTarget.entity.id);
         break;
+      case 'object':
+        deleteObject(deleteTarget.entity.id);
+        break;
       default:
         console.error('Unknown delete type:', deleteTarget.type);
         return;
@@ -64,8 +103,8 @@ const ModalManager = () => {
   };
 
   const renderCreateForm = () => {
-    switch (createModalType) {
-      case ENTITY_TYPES.CHARACTER:
+    switch (createModalEntityType) {
+      case 'character':
         return (
           <form onSubmit={handleCreateSubmit} className="space-y-4">
             <div>
@@ -152,7 +191,7 @@ const ModalManager = () => {
           </form>
         );
         
-      case ENTITY_TYPES.LOCATION:
+      case 'location':
         return (
           <form onSubmit={handleCreateSubmit} className="space-y-4">
             <div>
@@ -232,8 +271,152 @@ const ModalManager = () => {
           </form>
         );
         
-      default:
-        return <div>Unknown entity type</div>;
+      case 'object':
+        return (
+          <form onSubmit={handleCreateSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Object Name *
+              </label>
+              <input
+                type="text"
+                required
+                value={formData.name || ''}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter object name"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Type
+              </label>
+              <select
+                value={formData.type || ''}
+                onChange={(e) => handleInputChange('type', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select a type</option>
+                <option value="weapon">Weapon</option>
+                <option value="armor">Armor</option>
+                <option value="artifact">Artifact</option>
+                <option value="tool">Tool</option>
+                <option value="jewelry">Jewelry</option>
+                <option value="book">Book</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description
+              </label>
+              <textarea
+                value={formData.description || ''}
+                onChange={(e) => handleInputChange('description', e.target.value)}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Describe the object..."
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Significance
+              </label>
+              <textarea
+                value={formData.significance || ''}
+                onChange={(e) => handleInputChange('significance', e.target.value)}
+                rows={2}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Why is this object important to your story?"
+              />
+            </div>
+            
+            <div className="flex justify-end space-x-3 pt-4">
+              <button
+                type="button"
+                onClick={closeCreateModal}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+              >
+                Create Object
+              </button>
+            </div>
+          </form>
+        );
+        
+            default: {
+        // Generic form for other entity types
+        const entityDisplayName = createModalEntityType ? 
+          createModalEntityType.charAt(0).toUpperCase() + createModalEntityType.slice(1) : 
+          'Entity';
+        return (
+          <form onSubmit={handleCreateSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {entityDisplayName} Name *
+              </label>
+              <input
+                type="text"
+                required
+                value={formData.name || ''}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={`Enter ${entityDisplayName.toLowerCase()} name`}
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description
+              </label>
+              <textarea
+                value={formData.description || ''}
+                onChange={(e) => handleInputChange('description', e.target.value)}
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder={`Describe this ${entityDisplayName.toLowerCase()}...`}
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Notes
+              </label>
+              <textarea
+                value={formData.notes || ''}
+                onChange={(e) => handleInputChange('notes', e.target.value)}
+                rows={2}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Additional notes..."
+              />
+            </div>
+            
+            <div className="flex justify-end space-x-3 pt-4">
+              <button
+                type="button"
+                onClick={closeCreateModal}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+              >
+                Create {entityDisplayName}
+              </button>
+            </div>
+          </form>
+        );
+      }
     }
   };
 
@@ -243,7 +426,7 @@ const ModalManager = () => {
       <Modal
         isOpen={showCreateModal}
         onClose={closeCreateModal}
-        title={`Create New ${createModalType === ENTITY_TYPES.CHARACTER ? 'Character' : 'Location'}`}
+        title={`Create New ${createModalEntityType === 'character' ? 'Character' : createModalEntityType === 'location' ? 'Location' : createModalEntityType === 'object' ? 'Object' : (createModalEntityType?.charAt(0).toUpperCase() + createModalEntityType?.slice(1))}`}
         size="md"
       >
         {renderCreateForm()}

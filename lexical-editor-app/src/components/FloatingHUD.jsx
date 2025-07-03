@@ -26,7 +26,7 @@ function InlineSuggestion({
 
   useEffect(() => {
     if (rect) {
-      const margin = -120;
+      const margin = -80;
       const viewportWidth = window.innerWidth;
       const containerWidth = 600; // Approximate width of the suggestion container
       
@@ -48,7 +48,7 @@ function InlineSuggestion({
       
       setPosition({
         top: rect.bottom + margin,
-        left: leftPosition - 280,
+        left: leftPosition - 360,
       });
     }
   }, [rect]);
@@ -119,7 +119,7 @@ function AnalysisDisplay({ analysis, onClose, rect }) {
 
   useEffect(() => {
     if (rect) {
-      const margin = -120;
+      const margin = -80;
       const viewportWidth = window.innerWidth;
       const containerWidth = 400; // Approximate width of the analysis container
       
@@ -141,7 +141,7 @@ function AnalysisDisplay({ analysis, onClose, rect }) {
       
       setPosition({
         top: rect.bottom + margin,
-        left: leftPosition - 280,
+        left: leftPosition - 360,
       });
     }
   }, [rect]);
@@ -225,7 +225,7 @@ export default function FloatingHUD({ rect, selectedText }) {
   useEffect(() => {
     if (rect) {
       // Position the HUD below the selected text
-      const margin = -120;
+      const margin = -80;
       const viewportWidth = window.innerWidth;
       const hudWidth = 400; // Approximate width of the HUD
       
@@ -247,7 +247,7 @@ export default function FloatingHUD({ rect, selectedText }) {
       
       setPosition({
         top: rect.bottom + margin,
-        left: leftPosition - 280 ,
+        left: leftPosition - 360 ,
       });
     }
   }, [rect]);
