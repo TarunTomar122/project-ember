@@ -100,4 +100,12 @@
   .transition-shadow-smooth {
     transition: box-shadow 0.2s ease-in-out;
   }
+  
+  /* Line clamp utility for story cards */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }

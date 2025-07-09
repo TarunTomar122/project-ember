@@ -12,6 +12,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@heroicons/react": "^2.2.0",
+    "@lexical/html": "^0.33.0",
     "@lexical/react": "^0.32.1",
     "@lexical/rich-text": "^0.32.1",
     "@lexical/selection": "^0.32.1",
